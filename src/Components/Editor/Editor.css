@@ -1,0 +1,39 @@
+.container{
+    background-color: #fff;
+    margin-left: auto;
+    margin-right: auto;
+    height: 60vh;
+    width: 600px;
+    max-width: 100vh;
+    border-radius: 10px;
+    padding: 30px;
+    text-align: center;
+}
+
+.header{
+    font-size: large;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.subheader{
+    color: #202945;
+    margin-bottom: 20px;
+}
+
+.button{
+    font-weight: 700;
+    background-color: #fff;
+    padding: 10px 20px;
+    border-radius: 7px;
+    border: 1px black solid;
+    margin-bottom: 20px;
+}
+
+.photo{
+    margin-left: auto;
+    margin-right: auto;
+    width: 360px;
+    height: 360px;
+    overflow: hidden;
+}
