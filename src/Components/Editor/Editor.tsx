@@ -1,57 +1,62 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import './Editor.css';
 
-const Photo = () => {
-    const [position, setPosition] = useState({x: 0, y: 0, zoom: 0});
+let mouseDown = 0;
+window.onmousedown = () => {
+    ++mouseDown;
+    console.log('DOWN')
+}
+window.onmouseup = () => {
+    --mouseDown;
+    console.log('UP')
+}
 
-    const imageMove = (e: any) =>{
-        const moveX = position.x + e.movementX;
-        const moveY = position.y + e.movementY;
-        setPosition({x: moveX, y: moveY, zoom: 0})
-    }
-
-    const startDrag = (e: any) => {
-        console.log("Drag");
-    
-        e.target.addEventListener('mousemove', imageMove);
-    }
-    
-    const stopDrag = (e: any) => {
-        console.log("stopDrag");
-    
-        e.target.removeEventListener('mousemove', imageMove);
-    }
-
-    /**
-     * @type {HTMLImageElement}
-     */
-
-
+const Image = (prop: any) => {
     const image = useRef<HTMLImageElement>(null);
+    
+    useEffect(() => {
+        const move = () => {
+            if(image.current !== null){
+                const style = image.current.style;
+                style.left = prop.position.x + 'px';
+                style.top = prop.position.y + 'px';
+                style.transform = "scale("+ (1+prop.position.zoom/10)+")";
+            }
+        }
 
-    if(image.current !== null){
-        const style = image.current.style;
-
-        style.marginLeft = position.x + 'px';
-        style.marginTop = position.y + 'px';
-        style.width = 360+10*position.zoom + 'px';
-        style.height = 360+10*position.zoom + 'px';
-    }
+        move();
+    }, [prop.position]);
 
     return(
-        <div className="photo">
-            <img className="image" ref={image} src="image.png" alt="" draggable="false" onMouseDown={startDrag} onMouseUp={stopDrag} />
-        </div>
+        <img className="image" ref={image} src="image.png" alt="" draggable="false" />
     )
 }
 
-const Editor = () => (
-    <div className="container">
-        <div className="header">Zdjęcie profilowe</div>
-        <div className="subheader">Dodaj lub zmień obecne zdjęcie profilowe</div>
-        <button className="button">Dodaj zdjęcie</button>
-        <Photo />
-    </div>
-)
+const Editor = () => {
+    const [position, setPosition] = useState({x: 0, y: 0, zoom: 0});
+
+    const zoom = (e: any) => {
+        setPosition({x: position.x, y: position.y, zoom: e.target.value});
+    }
+
+    const moveEvent = (e: any) =>{
+        if(mouseDown){
+            setPosition({x: position.x+e.movementX, y: position.y+e.movementY, zoom: position.zoom})
+            console.log("move");
+        }
+    }
+
+    return(
+        <div className="container">
+            <div className="header">Zdjęcie profilowe</div>
+            <div className="subheader">Dodaj lub zmień obecne zdjęcie profilowe</div>
+            <button className="button">Dodaj zdjęcie</button>
+            <div className="area" onMouseMove={moveEvent} >
+                <Image position={position} />
+            </div>
+            <input className="slider" type="range" min="1" max="100" defaultValue="1" onInput={zoom}></input>
+        </div>
+    )
+}
 
 export default Editor;
