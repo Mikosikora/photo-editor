@@ -41,7 +41,16 @@ const Editor = () => {
 
     const moveEvent = (e: any) =>{
         if(mouseDown){
-            setPosition({x: position.x+e.movementX, y: position.y+e.movementY, zoom: position.zoom})
+            var newX = position.x+e.movementX
+            var newY = position.y+e.movementY
+
+            if(newX>((360*(1+position.zoom/10))-360)/2) return
+            if(newY>((360*(1+position.zoom/10))-360)/2) return
+
+            if(newX<((360-360*(1+position.zoom/10)))/2) return
+            if(newY<((360-360*(1+position.zoom/10)))/2) return
+
+            setPosition({x: newX, y: newY, zoom: position.zoom})
             console.log("move");
         }
     }
@@ -54,7 +63,9 @@ const Editor = () => {
             <div className="area" onMouseMove={moveEvent} >
                 <Image position={position} />
             </div>
-            <input className="slider" type="range" min="1" max="100" defaultValue="1" onInput={zoom}></input>
+            <div className="zoomConainer">
+                <input className="slider" type="range" min="0" max="100" defaultValue="0" onInput={zoom}></input>
+            </div>
         </div>
     )
 }

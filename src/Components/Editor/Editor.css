@@ -36,6 +36,7 @@
     width: 360px;
     height: 360px;
     overflow: hidden;
+    margin-bottom: 20px;
 }
 
 .image{
@@ -58,7 +59,7 @@
     opacity: 1;
   }
   
-  .slider::-webkit-slider-thumb {
+.slider::-webkit-slider-thumb {
     -webkit-appearance: none;
     border-radius: 10px;
     width: 20px;
@@ -66,4 +67,11 @@
     background: #fff;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
     cursor: pointer;
-  }
+}
+
+.zoomConainer{
+    display: flex;
+    width: 360px;
+    margin-left: auto;
+    margin-right: auto;
+}
