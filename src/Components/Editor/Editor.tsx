@@ -1,13 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
 import './Editor.css';
 
-let mouseDown = 0;
+let mouseDown = false;
 window.onmousedown = () => {
-    ++mouseDown;
+    mouseDown = true;
     console.log('DOWN')
 }
 window.onmouseup = () => {
-    --mouseDown;
+    mouseDown = false;
     console.log('UP')
 }
 
@@ -28,12 +28,24 @@ const Image = (prop: any) => {
     }, [prop.position]);
 
     return(
-        <img className="image" ref={image} src="image.png" alt="" draggable="false" />
+        <img className="image" ref={image} src={prop.url} alt="" draggable="false" />
     )
 }
 
 const Editor = () => {
     const [position, setPosition] = useState({x: 0, y: 0, zoom: 0});
+    const [url, setURL] = useState('');
+
+    const file = useRef<HTMLInputElement>(null)
+
+    const uploadImage = () => {
+        if(file.current !== null){
+            const img = file.current!.files![0];
+            const obj = URL.createObjectURL(img);
+            setURL(obj);
+            console.log("git");
+        }
+    }
 
     const zoom = (e: any) => {
         setPosition({x: position.x, y: position.y, zoom: e.target.value});
@@ -59,9 +71,10 @@ const Editor = () => {
         <div className="container">
             <div className="header">Zdjęcie profilowe</div>
             <div className="subheader">Dodaj lub zmień obecne zdjęcie profilowe</div>
-            <button className="button">Dodaj zdjęcie</button>
+            <input type="file" id="file" ref={file} onChange={uploadImage}/>
+            <label htmlFor="file" className="button">Dodaj zdjęcie</label>
             <div className="area" onMouseMove={moveEvent} >
-                <Image position={position} />
+                <Image position={position} url={url} />
             </div>
             <div className="zoomConainer">
                 <input className="slider" type="range" min="0" max="100" defaultValue="0" onInput={zoom}></input>
