@@ -43,7 +43,7 @@ const Editor = () => {
             const img = file.current!.files![0];
             const obj = URL.createObjectURL(img);
             setURL(obj);
-            console.log("git");
+            console.log("uploaded");
         }
     }
 
@@ -55,12 +55,6 @@ const Editor = () => {
         if(mouseDown){
             var newX = position.x+e.movementX
             var newY = position.y+e.movementY
-
-            if(newX>((360*(1+position.zoom/10))-360)/2) return
-            if(newY>((360*(1+position.zoom/10))-360)/2) return
-
-            if(newX<((360-360*(1+position.zoom/10)))/2) return
-            if(newY<((360-360*(1+position.zoom/10)))/2) return
 
             setPosition({x: newX, y: newY, zoom: position.zoom})
             console.log("move");
@@ -81,14 +75,16 @@ const Editor = () => {
                 <svg width="360" height="360" className="mask">
                     <mask id="mask">
                         <rect fill="white" width="100%" height="100%"/>
-                        <circle cx="180" cy="180" r="175" stroke="black" stroke-width="2" fill="black" />
+                        <circle cx="180" cy="180" r="175" stroke="black" fill="black" />
                     </mask>
                     <rect mask="url(#mask)" fill="#ffffff99" width="100%" height="100%"/>
                 </svg>
                 <Image position={position} url={url} />
             </div>
             <div className="zoomConainer">
+                <img src="sub-icon.png" alt="-" width="20" height="20" />
                 <input className="slider" type="range" min="0" max="100" defaultValue="0" onInput={zoom}></input>
+                <img src="add-icon.png" alt="+" width="20" />
             </div>
             <div className="cardFooter">
                 <button className="cancelButton">Anuluj</button>
