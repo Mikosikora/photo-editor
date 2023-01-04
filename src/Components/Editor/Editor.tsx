@@ -75,7 +75,7 @@ const Editor = () => {
             <label htmlFor="file" className="button">Dodaj zdjęcie</label>
             <div className="area" onMouseMove={moveEvent} >
                 <div className="mask-info">
-                    <img src="mouse-drag.png" width="20" />
+                    <img src="mouse-drag.png" alt="" width="20" />
                     &nbsp; Przeciągaj i dopasuj
                 </div>
                 <svg width="360" height="360" className="mask">
